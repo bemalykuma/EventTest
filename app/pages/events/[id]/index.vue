@@ -39,7 +39,12 @@ const remaining = computed(() => {
   if (event.value.maxParticipants === null) return Infinity  // ไม่จำกัด
   return event.value.maxParticipants - (event.value.registeredCount ?? 0)
 })
+
+useHead({
+  title: `${event.value.name} - GetEvent`
+})
 </script>
+
 
 <template>
   <div v-if="status === 'pending'">กำลังโหลด...</div>

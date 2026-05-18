@@ -3,6 +3,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 
+useHead({
+  title: 'Add Event - GetEvent'
+})
+
 type EventDate = { date: string }
 
 const router = useRouter()
@@ -85,7 +89,7 @@ async function onSave() {
 <template>
   <div class="w-full mx-auto px-20 py-8">
     <div class="border-2 border-black rounded-[20px] p-8 w-full">
-      <h1 class="text-2xl font-bold text-center mb-6">เพิ่มกิจกรรม</h1>
+      <h1 class="text-2xl font-bold text-center mb-6">Add Event</h1>
 
       <div class="flex gap-6">
         <div class="flex flex-col items-center gap-2 shrink-0 w-50 h-70 border-2 border-gray-900 rounded-[13px]">
@@ -100,7 +104,7 @@ async function onSave() {
             <label class="text-sm text-gray-500">Name</label>
             <Input
               v-model="form.name"
-              placeholder="ชื่อกิจกรรม"
+              placeholder="Event Name"
               :class="{ 'border-red-500 focus-visible:ring-red-500': submitted && nameError }"
             />
             <p v-if="submitted && nameError" class="text-xs text-red-500">{{ nameError }}</p>
@@ -108,7 +112,7 @@ async function onSave() {
 
           <div class="flex flex-col gap-1">
             <label class="text-sm text-gray-500">Description</label>
-            <Textarea v-model="form.description" placeholder="รายละเอียด" class="min-h-28" />
+            <Textarea v-model="form.description" placeholder="Description" class="min-h-28" />
           </div>
 
           <div class="flex gap-4">
@@ -116,7 +120,7 @@ async function onSave() {
               <label class="text-sm text-gray-500">Location</label>
               <Input
                 v-model="form.location"
-                placeholder="สถานที่"
+                placeholder="Location"
                 :class="{ 'border-red-500 focus-visible:ring-red-500': submitted && locationError }"
               />
               <p v-if="submitted && locationError" class="text-xs text-red-500">{{ locationError }}</p>

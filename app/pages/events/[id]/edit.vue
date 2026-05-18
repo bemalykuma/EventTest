@@ -5,6 +5,9 @@ import { Trash2 } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+useHead({
+  title: 'Manage Event - GetEvent'
+})
 
 type Event = InferSelectModel<typeof eventsTable>
 type EventDate = { date: string }
@@ -103,7 +106,7 @@ async function onDelete() {
 <template>
   <div class="w-full mx-auto px-20 py-8">
     <div class="border-2 border-black rounded-[20px] p-8 w-full">
-      <h1 class="text-2xl font-bold text-center mb-6">แก้ไขกิจกรรม</h1>
+      <h1 class="text-2xl font-bold text-center mb-6">Manage Event</h1>
 
       <div class="flex gap-6">
   

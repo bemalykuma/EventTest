@@ -53,7 +53,7 @@ watch([search, status, sortBy, dateRange], () => {
 
   <template v-else>
     <!-- Cards -->
-    <div class="flex flex-wrap gap-5 mt-5">
+    <div class="flex flex-wrap gap-5 mt-5 justify-center">
       <CardEvent
         v-for="event in paginatedEvents"
         :key="event.id"
@@ -96,8 +96,8 @@ watch([search, status, sortBy, dateRange], () => {
 
     <!-- Page info -->
     <p class="text-center text-sm text-gray-400 mt-2">
-      หน้า {{ currentPage }} / {{ totalPages }}
-      ({{ filteredEvents.length }} กิจกรรม)
+      Page {{ currentPage }} / {{ totalPages }}
+      ({{ filteredEvents.length }} Events)
     </p>
   </template>
 </template>

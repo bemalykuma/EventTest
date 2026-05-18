@@ -24,5 +24,13 @@ export default defineNuxtConfig({
         types: ['node']
       }
     }
+  },
+  app: {
+    head: {
+      title: 'GetEvent - Find and Join Exciting Events Near You',
+      link: [
+        { rel: 'icon', type: 'image/png', href: '/icon.png' }
+      ]
+    }
   }
 })

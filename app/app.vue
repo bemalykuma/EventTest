@@ -5,7 +5,7 @@ import Navbar from './components/Navbar.vue';
 
 <template>
   <Navbar />
-  <div class="px-20 py-5">
+  <div class="px-20 py-5 font-sans">
     <NuxtPage />
   </div>
 </template>
