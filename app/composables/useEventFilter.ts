@@ -7,6 +7,7 @@ type EventDate = { date: string }
 
 export type StatusFilter = 'all' | 'upcoming' | 'today' | 'past'
 export type SortOption = 'date_desc' | 'date_asc' | 'registered_desc' | 'registered_asc'
+export const ITEMS_PER_PAGE = 6
 
 // jsonb column จาก Drizzle type เป็น unknown → parse ให้ปลอดภัย ไม่ต้อง cast
 function parseDates(raw: unknown): EventDate[] {

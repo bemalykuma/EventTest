@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { InferSelectModel } from 'drizzle-orm'
 import type { events as eventsTable } from '~/server/db/schema'
-import { useEventFilter } from '~/composables/useEventFilter'
+import { useEventFilter, ITEMS_PER_PAGE } from '~/composables/useEventFilter'
+import { ChevronLeft, ChevronRight } from "lucide-vue-next";
 
 type Event = InferSelectModel<typeof eventsTable>
 
@@ -12,9 +13,25 @@ const { data: events, status: fetchStatus } = await useAsyncData<Event[]>(
 
 const { search, status, sortBy, dateRange, applyFilters } = useEventFilter()
 
+const currentPage = ref(1)
+
 const filteredEvents = computed(() => {
   if (!events.value) return []
   return applyFilters(events.value)
+})
+
+const totalPages = computed(() =>
+  Math.ceil(filteredEvents.value.length / ITEMS_PER_PAGE)
+)
+
+const paginatedEvents = computed(() => {
+  const start = (currentPage.value - 1) * ITEMS_PER_PAGE
+  return filteredEvents.value.slice(start, start + ITEMS_PER_PAGE)
+})
+
+// ✅ reset กลับหน้า 1 เมื่อ filter เปลี่ยน
+watch([search, status, sortBy, dateRange], () => {
+  currentPage.value = 1
 })
 </script>
 
@@ -34,11 +51,53 @@ const filteredEvents = computed(() => {
     ไม่พบกิจกรรม
   </div>
 
-  <div v-else class="flex flex-wrap gap-5 mt-5">
-    <CardEvent
-      v-for="event in filteredEvents"
-      :key="event.id"
-      :event="event"
-    />
-  </div>
+  <template v-else>
+    <!-- Cards -->
+    <div class="flex flex-wrap gap-5 mt-5">
+      <CardEvent
+        v-for="event in paginatedEvents"
+        :key="event.id"
+        :event="event"
+      />
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex items-center justify-center gap-2 mt-8">
+      <button
+        :disabled="currentPage === 1"
+        class="p-2.5 rounded-full border disabled:opacity-40 hover:bg-gray-100 h-9 w-9 items-center justify-center flex"
+        @click="currentPage--"
+      >
+        <ChevronLeft class="w-5 h-5" />
+      </button>
+
+      <button
+        v-for="page in totalPages"
+        :key="page"
+        :class="[
+          'px-3 py-1 rounded-full border',
+          page === currentPage
+            ? 'bg-black text-white border-black'
+            : 'hover:bg-gray-100'
+        ]"
+        @click="currentPage = page"
+      >
+        {{ page }}
+      </button>
+
+      <button
+        :disabled="currentPage === totalPages"
+        class="p-2.5 rounded-full border disabled:opacity-40 hover:bg-gray-100 h-9 w-9 items-center justify-center flex"
+        @click="currentPage++"
+      >
+        <ChevronRight class="w-5 h-5" />
+      </button>
+    </div>
+
+    <!-- Page info -->
+    <p class="text-center text-sm text-gray-400 mt-2">
+      หน้า {{ currentPage }} / {{ totalPages }}
+      ({{ filteredEvents.length }} กิจกรรม)
+    </p>
+  </template>
 </template>
