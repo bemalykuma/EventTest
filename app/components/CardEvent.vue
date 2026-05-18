@@ -44,7 +44,7 @@ const formattedDate = computed(() => {
 </script>
 
 <template>
-  <div class="bg-white rounded-[20px] border-2 border-black w-[250px] h-132 p-3 flex flex-col">
+  <div class="bg-white rounded-[20px] border-2 border-black w-62.5 h-132 p-3 flex flex-col">
     <div>
       <div class="w-full h-78 bg-gray-200 rounded-[10px] overflow-hidden">
         <img

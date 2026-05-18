@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import {
   Select,
   SelectContent,
@@ -9,13 +8,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import type { StatusFilter } from '~/composables/useEventFilter'
 
-const selected = ref('all')
+const model = defineModel<StatusFilter>({ default: 'all' })
 </script>
 
 <template>
-  <Select v-model="selected">
-    <SelectTrigger class="w-[180px] rounded-full border-black border-2">
+  <Select v-model="model">
+    <SelectTrigger class="w-45 rounded-full border-black border-2">
       <SelectValue placeholder="Select a status" />
     </SelectTrigger>
     <SelectContent>

@@ -6,13 +6,20 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from '@/components/ui/input-group'
+
+const model = defineModel<string>({ default: '' })
 </script>
 
 <template>
   <InputGroup>
-    <InputGroupInput placeholder="Search for Event's Name..." />
+    <InputGroupInput
+      v-model="model"
+      placeholder="Search for Event's Name..."
+    />
     <InputGroupAddon align="inline-end">
-      <InputGroupButton><Search class="text-black " /></InputGroupButton>
+      <InputGroupButton>
+        <Search class="text-black" />
+      </InputGroupButton>
     </InputGroupAddon>
   </InputGroup>
 </template>

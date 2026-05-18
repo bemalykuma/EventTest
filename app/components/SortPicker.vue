@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import {
   Select,
   SelectContent,
@@ -7,27 +6,28 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  SelectLabel
+  SelectLabel,
 } from '@/components/ui/select'
+import type { SortOption } from '~/composables/useEventFilter'
 
-const sortBy = ref('date_desc') // ค่าเริ่มต้น = วันที่ใหม่ก่อน
+const model = defineModel<SortOption>({ default: 'date_desc' })
 </script>
 
 <template>
-  <Select v-model="sortBy">
-    <SelectTrigger class="w-[180px] rounded-full border-black border-2">
+  <Select v-model="model">
+    <SelectTrigger class="w-45 rounded-full border-black border-2">
       <SelectValue placeholder="Sort by" />
     </SelectTrigger>
     <SelectContent>
-      <SelectGroup >
+      <SelectGroup>
         <SelectLabel>Date</SelectLabel>
         <SelectItem value="date_desc">Newest first</SelectItem>
         <SelectItem value="date_asc">Oldest first</SelectItem>
       </SelectGroup>
       <SelectGroup>
         <SelectLabel>Popularity</SelectLabel>
-        <SelectItem value="registered_asc">Least popular</SelectItem>
         <SelectItem value="registered_desc">Most popular</SelectItem>
+        <SelectItem value="registered_asc">Least popular</SelectItem>
       </SelectGroup>
     </SelectContent>
   </Select>
