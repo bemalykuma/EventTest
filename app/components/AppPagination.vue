@@ -74,7 +74,7 @@ const visiblePages = computed(() => {
         </span>
         <button
           v-else
-          @click="goTo(page)"
+          @click="typeof page === 'number' && goTo(page)"
           :class="[
             'flex items-center justify-center w-9 h-9 rounded-[8px] border text-sm font-medium transition',
             page === currentPage

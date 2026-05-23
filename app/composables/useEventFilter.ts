@@ -3,48 +3,23 @@ import type { InferSelectModel } from 'drizzle-orm'
 import type { events as eventsTable } from '../../server/db/schema'
 
 type Event = InferSelectModel<typeof eventsTable>
-type EventDate = { date: string }
 
 export type StatusFilter = 'all' | 'upcoming' | 'today' | 'past'
 export type SortOption = 'date_desc' | 'date_asc' | 'registered_desc' | 'registered_asc'
 export const ITEMS_PER_PAGE = 6
 
-// jsonb column จาก Drizzle type เป็น unknown → parse ให้ปลอดภัย ไม่ต้อง cast
-function parseDates(raw: unknown): EventDate[] {
-  if (!Array.isArray(raw)) return []
-  return raw.filter((d): d is EventDate => typeof d === 'object' && d !== null && 'date' in d)
-}
-
-// ดึงวันที่แรกของ event (ใช้สำหรับ sort และ filter)
-function getFirstDate(event: Event): Date {
-  const dates = parseDates(event.dates)
-  if (!dates.length) return new Date(0)
-  return new Date(dates[0]?.date ?? 0)
-}
-
-// ดึงวันที่สุดท้ายของ event (ใช้เช็ค past)
-function getLastDate(event: Event): Date {
-  const dates = parseDates(event.dates)
-  if (!dates.length) return new Date(0)
-  return new Date(dates[dates.length - 1]?.date ?? 0)
-}
-
-// เช็ค status ของ event เทียบกับวันปัจจุบัน
 function toDateOnly(d: Date): Date {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate())
 }
 
 function getEventStatus(event: Event): 'upcoming' | 'today' | 'past' {
-  const today = toDateOnly(new Date()) // เช่น 2026-05-18 00:00:00
+  const today = toDateOnly(new Date())
+  const eventDate = toDateOnly(new Date(event.date))
 
-  const firstDate = toDateOnly(getFirstDate(event))
-  const lastDate = toDateOnly(getLastDate(event))
-
-  if (firstDate > today) return 'upcoming'
-  if (lastDate < today) return 'past'
+  if (eventDate > today) return 'upcoming'
+  if (eventDate < today) return 'past'
   return 'today'
 }
-
 
 export function useEventFilter() {
   const search = ref('')
@@ -58,7 +33,7 @@ export function useEventFilter() {
   function applyFilters(events: Event[]): Event[] {
     let result = [...events]
 
-    // 1. Filter by search (ชื่อเท่านั้น)
+    // 1. Filter by search
     const q = search.value.trim().toLowerCase()
     if (q) {
       result = result.filter(e => e.name.toLowerCase().includes(q))
@@ -77,11 +52,8 @@ export function useEventFilter() {
       rangeEnd.setHours(23, 59, 59, 999)
 
       result = result.filter(e => {
-        const dates = parseDates(e.dates)
-        return dates.some(d => {
-          const dt = new Date(d.date)
-          return dt >= rangeStart && dt <= rangeEnd
-        })
+        const dt = new Date(e.date)
+        return dt >= rangeStart && dt <= rangeEnd
       })
     }
 
@@ -89,9 +61,9 @@ export function useEventFilter() {
     result.sort((a, b) => {
       switch (sortBy.value) {
         case 'date_asc':
-          return getFirstDate(a).getTime() - getFirstDate(b).getTime()
+          return new Date(a.date).getTime() - new Date(b.date).getTime()
         case 'date_desc':
-          return getFirstDate(b).getTime() - getFirstDate(a).getTime()
+          return new Date(b.date).getTime() - new Date(a.date).getTime()
         case 'registered_desc':
           return (b.registeredCount ?? 0) - (a.registeredCount ?? 0)
         case 'registered_asc':

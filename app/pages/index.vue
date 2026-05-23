@@ -29,7 +29,6 @@ const paginatedEvents = computed(() => {
   return filteredEvents.value.slice(start, start + ITEMS_PER_PAGE)
 })
 
-// ✅ reset กลับหน้า 1 เมื่อ filter เปลี่ยน
 watch([search, status, sortBy, dateRange], () => {
   currentPage.value = 1
 })
@@ -47,13 +46,18 @@ watch([search, status, sortBy, dateRange], () => {
     กำลังโหลด...
   </div>
 
-  <div v-else-if="filteredEvents.length === 0" class="flex justify-center mt-10 text-gray-500">
-    ไม่พบกิจกรรม
+  <div
+    v-else-if="filteredEvents.length === 0"
+    class="flex justify-center mt-10 text-gray-500"
+  >
+    Not Found
   </div>
 
   <template v-else>
     <!-- Cards -->
-    <div class="flex flex-wrap gap-5 mt-5 justify-center">
+    <div
+      class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 mt-5 justify-items-center lg:grid-cols-6"
+    >
       <CardEvent
         v-for="event in paginatedEvents"
         :key="event.id"
@@ -62,7 +66,7 @@ watch([search, status, sortBy, dateRange], () => {
     </div>
 
     <!-- Pagination -->
-    <div class="flex items-center justify-center gap-2 mt-8">
+    <div class="flex items-center justify-center gap-2 mt-8 flex-wrap">
       <button
         :disabled="currentPage === 1"
         class="p-2.5 rounded-full border disabled:opacity-40 hover:bg-gray-100 h-9 w-9 items-center justify-center flex"

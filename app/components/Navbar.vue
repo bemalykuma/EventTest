@@ -1,5 +1,5 @@
 <template>
-    <nav class="p-4 px-20 border-b-2">
+    <nav class="p-4 sm:px-20 border-b-2">
         <div class="flex justify-between items-center">
             <NuxtLink to="/">
                 <h1 class="text-[24px] font-bold">GetEvent</h1>

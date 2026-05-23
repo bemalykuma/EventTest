@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     .set({
       name:            body.name,
       description:     body.description,
-      dates:            body.dates,
+      date:            new Date(body.date),
       location:        body.location,
       maxParticipants: body.maxParticipants,
       registeredCount: body.registeredCount,

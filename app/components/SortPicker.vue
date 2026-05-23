@@ -15,7 +15,7 @@ const model = defineModel<SortOption>({ default: 'date_desc' })
 
 <template>
   <Select v-model="model">
-    <SelectTrigger class="w-45 rounded-full border-black border-2">
+    <SelectTrigger class="sm:w-45 w-full rounded-full border-black border-2">
       <SelectValue placeholder="Sort by" />
     </SelectTrigger>
     <SelectContent>

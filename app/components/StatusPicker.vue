@@ -15,7 +15,7 @@ const model = defineModel<StatusFilter>({ default: 'all' })
 
 <template>
   <Select v-model="model">
-    <SelectTrigger class="w-45 rounded-full border-black border-2">
+    <SelectTrigger class="w-full sm:w-45 rounded-full border-black border-2">
       <SelectValue placeholder="Select a status" />
     </SelectTrigger>
     <SelectContent>

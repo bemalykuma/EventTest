@@ -43,7 +43,7 @@ function clearDate() {
     <PopoverTrigger as-child>
       <Button
         variant="outline"
-        class="w-50 justify-between text-left font-normal rounded-full border-black border-2"
+        class="w-full sm:w-50 justify-between text-left font-normal rounded-full border-black border-2"
       >
         <p>{{ displayText }}</p>
         <CalendarIcon class="mr-2 h-4 w-4" />
@@ -51,7 +51,7 @@ function clearDate() {
     </PopoverTrigger>
     <PopoverContent class="w-auto p-0">
       <RangeCalendar
-        v-model="value as any"
+        v-model="value as DateRange"
         locale="en-US"
         :number-of-months="1"
       />
